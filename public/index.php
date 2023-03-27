@@ -5,6 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-qergqergrqerrg
+<?= 'Привет' ?>
 </body>
 </html>
