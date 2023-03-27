@@ -18,8 +18,11 @@ COPY ./_docker/app/php.ini /usr/local/etc/php/conf.d/php.ini
 
 # Install composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
+COPY ./_docker/app/composer.* ./
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin
 
-WORKDIR /var/www
+COPY ./ .
+
+RUN composer dump-autoload --optimize

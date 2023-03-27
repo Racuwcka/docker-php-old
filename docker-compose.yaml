@@ -16,19 +16,23 @@ services:
       context: .
       dockerfile: _docker/app/Dockerfile
     volumes:
-      - ./:/var/www
+      - /var/www/html/vendor
+      - ./:/var/www/html
     depends_on:
       - db
     container_name: php_app
   db:
     image: mysql:8.0
-    restart: always
+    restart: unless-stopped
     volumes:
-      - ./tmp/db:/var/lib/mysql
+      - mysqldata:/var/lib/mysql
     environment:
       MYSQL_DATABASE: docker_php
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "8101:3306"
-    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+#    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
     container_name: php_db
+
+volumes:
+  mysqldata:
