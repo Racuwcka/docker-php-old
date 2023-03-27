@@ -2,9 +2,9 @@ version: "3"
 
 services:
   nginx:
-    build:
-      dockerfile: ./_docker/nginx/Dockerfile
+    image: nginx:latest
     volumes:
+      - ./:/var/www/
       - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
     ports:
       - "8877:80"
@@ -15,6 +15,8 @@ services:
     build:
       context: .
       dockerfile: _docker/app/Dockerfile
+    volumes:
+      - ./:/var/www/html
     depends_on:
       - db
     container_name: php_app
@@ -26,6 +28,8 @@ services:
     environment:
       MYSQL_DATABASE: docker_php
       MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8101:3306"
 #    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
     container_name: php_db
 
