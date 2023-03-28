@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  nginx:
+  web:
     build:
       dockerfile: ./_docker/nginx/Dockerfile
     volumes:
