@@ -1,3 +1,22 @@
+<?php
+
+use App\Repository\LanguageRepository;
+use App\Repository\TranslationRepository;
+
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $translationRepository = new TranslationRepository();
+    $translation = $translationRepository->findForLanguage($_POST['language'], $_POST['phrase']) ?: 'Translation not found...';
+
+} else {
+
+    $languageRepository = new LanguageRepository();
+    $languages = $languageRepository->findAll();
+}
+
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -73,7 +92,7 @@
         <h1 class="display-5 fw-bold text-white">Translate This</h1>
         <div class="col-lg-6 mx-auto">
             <?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
-                <p class="fs-5 mb-4"><?php echo 'Your translation goes here'; ?></p>
+                <p class="fs-5 mb-4"><?= $translation; ?></p>
                 <a href="/">Translate another</a>
             <?php else: ?>
 
@@ -84,9 +103,11 @@
                         <div class="col">
                             <select name="language" class="form-select" aria-label="Default select example">
                                 <option selected>Select a language</option>
-                                <option value="1">French</option>
-                                <option value="1">German</option>
-                                <option value="1">Spanish</option>
+                                <?php foreach ($languages as $language): ?>
+                                    <option value="<?= $language->getId(); ?>">
+                                        <?= $language->getName(); ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="col">
